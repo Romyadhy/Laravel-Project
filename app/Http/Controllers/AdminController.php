@@ -7,6 +7,7 @@ use App\Models\Picupps;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Exception\RequestException;
 
 class AdminController extends Controller
 {
@@ -32,12 +33,12 @@ class AdminController extends Controller
         $contentArrayMaps = json_decode($contentMaps, true);
 
         $dataPicups = $contentArrayPicups['picups'];
-        $dataMaps = $contentArrayMaps['maps'];
+        // $dataMaps = $contentArrayMaps['maps'];
         // dd($dataPicups);
 
         return view('backpage.admin', [
             'dataPicups' => $dataPicups, 
-            'dataMaps' => $dataMaps
+            // 'dataMaps' => $dataMaps
         ]);
         
     }
@@ -66,6 +67,9 @@ class AdminController extends Controller
        
             $picup_nama = $request->picup_nama;
             $picup_deskripsi = $request->picup_deskripsi;
+            $no_telepon = $request->no_telepon;
+            $alamat = $request->alamat;
+            $harga = $request->harga;
             $nama_maps = $request->nama_maps;
             $maps_latitude = $request->maps_latitude;
             $maps_longitude = $request->maps_longitude;
@@ -80,6 +84,9 @@ class AdminController extends Controller
 
                 'picup_nama' => $picup_nama,
                 'picup_deskripsi' => $picup_deskripsi,
+                'no_telepon' => $no_telepon,
+                'alamat' => $alamat,
+                'harga' => $harga,
                 'nama_maps' => $nama_maps,
                 'maps_latitude' => $maps_latitude,
                 'maps_longitude' => $maps_longitude
@@ -124,20 +131,17 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $picup = Http::get("http://127.0.0.1:8000/api/picups/{$id}");
+        {
+            $picup = Http::get("http://127.0.0.1:8000/api/picups/{$id}");
 
-        if($picup->failed()){
-            abort(404);
+            if($picup->failed()){
+                return redirect()->back()->with('error', 'Failed to fetch data');
+            }
+
+            $pic = $picup->json();
+            return view('backpage.create', compact('pic'));
         }
 
-        $pic = $picup->json();
-        // dd($pic);
-
-        return view('backpage.create', compact('pic'));
-
-       
-    }
 
     /**
      * Update the specified resource in storage.
@@ -148,35 +152,22 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //  // Validasi data yang diterima
-        //     $data = $request->validate([
-        //         'picup_nama' => 'required|string',
-        //         'picup_deskripsi' => 'required|string',
-        //         'nama_maps' => 'required|string',
-        //         'maps_latitude' => 'required|string',
-        //         'maps_longitude' => 'required|string'
-                
-        //     ]);
-
-        //      // Kirim permintaan PUT atau PATCH ke API untuk mengupdate data (ganti URL dan parameter sesuai dengan API Anda)
-        //     $response = Http::put("http://127.0.0.1:8000/api/picups/{$id}", $data);
-
-        //     if ($response->failed()) {
-        //         // Handle jika permintaan API gagal
-        //         return back()->with('error', 'Failed to update data.'); // Misalnya, tampilkan pesan error
-        //     }
-        
-        //     return redirect()->route('adminPage.index')->with('success', 'Data updated successfully.');
-
-            $picup_nama = $request->picup_nama;
-            $picup_deskripsi = $request->picup_deskripsi;
-            $nama_maps = $request->nama_maps;
-            $maps_latitude = $request->maps_latitude;
-            $maps_longitude = $request->maps_longitude;
+        // Validasi
+                $picup_nama = $request->picup_nama;
+                $picup_deskripsi = $request->picup_deskripsi;
+                $no_telepon = $request->no_telepon;
+                $alamat = $request->alamat;
+                $harga = $request->harga;
+                $nama_maps = $request->nama_maps;
+                $maps_latitude = $request->maps_latitude;
+                $maps_longitude = $request->maps_longitude;
 
         $param = [
                 'picup_nama' => $picup_nama,
                 'picup_deskripsi' => $picup_deskripsi,
+                'no_telepon' => $no_telepon,
+                'alamat' => $alamat,
+                'harga' => $harga,
                 'nama_maps' => $nama_maps,
                 'maps_latitude' => $maps_latitude,
                 'maps_longitude' => $maps_longitude
@@ -192,12 +183,22 @@ class AdminController extends Controller
         $content = $response->getBody()->getContents();
         $contentAryy = json_decode($content, true);
         if($contentAryy['status'] != true){
-            $error = $contentAryy['data'];
+            $error = $contentAryy['picups'];
             return redirect()->to('adminpage')->withErrors($error)->withInput();
         }
         else{
             return redirect()->to('adminpage')->with('success', 'Success Update Data');
         }
+
+    //     $response = Http::asJson()->put("http://127.0.0.1:8000/api/picups/$id", $param);
+
+    //     dd($response);
+
+    // if ($response->failed()) {
+    //     return redirect()->back()->with('error', 'Failed to update data')->withInput();
+    // }
+
+    // return redirect()->to('adminpage')->with('success', 'Success Update Data');
 
     }
 
@@ -209,6 +210,14 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $response = Http::delete("http://127.0.0.1:8000/api/picups/{$id}");
+        // dd($response);
+        if ($response->successful()) {
+            return redirect()->route('adminpage.index')->with('success', 'Data successfully deleted');
+        } else {
+            return redirect()->route('adminpage.index')->with('error', 'Failed to delete data');
+        }
+        
     }
 }

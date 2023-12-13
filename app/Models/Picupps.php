@@ -14,6 +14,10 @@ class Picupps extends Model
         'nama', 
         'deskripsi',
         'id_maps',
+        'no_telepon',
+        'alamat',
+        'harga'
+
     ];
 
     public function map()

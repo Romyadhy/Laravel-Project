@@ -103,8 +103,6 @@
 
     <script>
 
-    
-
         
         const map = L.map('map').setView([-8.409518, 115.188919], 10); // Centered around Bali
 
@@ -114,7 +112,7 @@
         }).addTo(map);
 
       // Panggil data koordinat dari API
-            $.getJSON('/getcoor', function(data) {
+            $.getJSON('/api/maps', function(data) {
                 $.each(data, function(index, coordinate) {
                     // Tambahkan marker berdasarkan koordinat dari database
                     L.marker([parseFloat(coordinate.latitude), parseFloat(coordinate.longitude)]).addTo(map).bindPopup('<b>Picup</b>Car').openPopup();

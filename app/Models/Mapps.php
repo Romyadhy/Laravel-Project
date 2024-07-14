@@ -10,6 +10,7 @@ class Mapps extends Model
     use HasFactory;
 
     protected $table = "mapps";
+    public $primaryKey = "id_maps";
     protected $fillable = [
         'nama_maps',
         'latitude',
@@ -18,6 +19,6 @@ class Mapps extends Model
 
     public function picups()
     {
-        return $this->hasMany(Picupps::class, 'id_maps');
+        return $this->hasMany(Picupps::class, 'id_maps', 'id_maps');
     }
 }

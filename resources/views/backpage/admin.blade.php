@@ -208,7 +208,7 @@
                         </form>
                     </div>
                     <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                        <a href="{{ route('adminpage.create') }}" type="button" id="createProductButton" data-modal-toggle="createProductModal" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                        <a href="{{ route('adminPages.create') }}" type="button" id="createProductButton" data-modal-toggle="createProductModal" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-1.5 -ml-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                             </svg>
@@ -250,6 +250,7 @@
                                 <th scope="col" class="p-4">No Telp</th>
                                 <th scope="col" class="p-4">Alamat Perusahaan</th>
                                 <th scope="col" class="p-4">Deskripsi</th>
+                                <th scope="col" class="p-4">Images</th>
                                 <th scope="col" class="p-4">Action</th>
                             </tr>
                         </thead>
@@ -259,7 +260,7 @@
                                 $counter = 1; 
                             @endphp
 
-                            @foreach ($dataPicups as $picup)
+                            @foreach ($picups as $picup)
                             
                             <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                           
@@ -285,7 +286,6 @@
                                 </td> --}}
                                 <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="flex items-center">
-                                        <div class="h-4 w-4 rounded-full inline-block mr-2 bg-green-700"></div>
                                         {{ $picup['no_telepon'] }}
                                     </div>
                                 </td>
@@ -295,10 +295,14 @@
                                 <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $picup['deskripsi'] }}
                                 </td>
+
+                                <td class="text-center border-2">
+                                    <img src="{{ asset('images/'.$picup->image) }}" alt="image" class="w-[50px]">
+                                </td>
                                 
                                 <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="flex items-center space-x-4">
-                                        <a href="{{ route('adminpage.edit', $picup['id']) }}" type="button" data-drawer-target="drawer-update-product" data-drawer-show="drawer-update-product" aria-controls="drawer-update-product" class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                        <a href="" type="button" data-drawer-target="drawer-update-product" data-drawer-show="drawer-update-product" aria-controls="drawer-update-product" class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                 <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                                 <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
@@ -321,7 +325,7 @@
                                         </form>
                                         </button> --}}
 
-                                        <form action="{{ route('adminpage.destroy', $picup['id']) }}" method="POST" onsubmit="return confirm('Are you ready to  lus this data')" class="d-inline">
+                                        <form action="" method="POST" onsubmit="return confirm('Are you ready to  lus this data')" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" name="submit" class="btn btn-danger btn-sm">Delete</button>

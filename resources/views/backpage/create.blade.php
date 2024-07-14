@@ -7,9 +7,9 @@
     <title>Create Data and Edit</title>
 </head>
 <body>
-    <form enctype="multipart/form-data" method="POST" action="{{ isset($pic['id'])?route('adminpage.update',$pic['id']):route('adminpage.store') }} ">
+    <form enctype="multipart/form-data" method="post" action=" {{route('adminPages.store')}} ">
 
-        @if ($errors->any())
+        {{-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $item)
@@ -18,30 +18,32 @@
         </ul>
     </div>
         
-    @endif
-
+    @endif --}}
+{{-- 
     @if (session()->has('success'))
                 <div class="alert alert-success">
                     {{session('success')}}
                 </div>        
-    @endif
+    @endif --}}
 
         @csrf
         @if(isset($pic['id']))
             @method('PUT')
         @endif
+
+        @method('post')
             <div>
                 <div>
-                    <label for="picup_nama">Nama Picup:</label>
-                    <input type="text" id="picup_nama" name="picup_nama"  value="{{ (isset($pic['picup_nama'])?$pic['picup_nama']:old('picup_nama')) }}"><br><br>
-                    @error('picup_nama')
+                    <label for="nama">Nama Picup:</label>
+                    <input type="text" id="nama" name="nama"  value="{{ (isset($pic['nama'])?$pic['deskripsi']:old('nama')) }}"><br><br>
+                    @error('nama')
                     <div>{{$message}}</div>
                     @enderror
                 </div>
                 <div>
-                    <label for="picup_deskripsi">Deskripsi Picup:</label>
-                    <input type="text" id="picup_deskripsi" name="picup_deskripsi" value="{{ isset($pic['picup_deskripsi'])?$pic['picup_deskripsi']:old('picup_deskripsi') }}"><br><br>
-                    @error('picup_deskripsi')
+                    <label for="deskripsi">Deskripsi Picup:</label>
+                    <input type="text" id="deskripsi" name="deskripsi" value="{{ isset($pic['deskripsi'])?$pic['picup_deskripsi']:old('deskripsi') }}"><br><br>
+                    @error('deskripsi')
                     <div>{{$message}}</div>
                     @enderror
                 </div>
@@ -77,19 +79,27 @@
                 </div>
                 
                 <div>
-                    <label for="maps_latitude">Latitude Maps:</label>
-                    <input type="text" id="maps_latitude" name="maps_latitude" value="{{ isset($pic['maps_latitude'])?$pic['maps_latitude']:old('maps_latitude') }}"><br><br>
-                    @error('maps_latitude')
+                    <label for="latitude">Latitude Maps:</label>
+                    <input type="text" id="latitude" name="latitude" value="{{ isset($pic['latitude'])?$pic['latitude']:old('latitude') }}"><br><br>
+                    @error('latitude')
                     <div>{{$message}}</div>
                     @enderror 
                 </div>
                 
                 <div>
-                    <label for="maps_longitude">Longitude Maps:</label>
-                    <input type="text" id="maps_longitude" name="maps_longitude" value="{{ isset($pic['maps_longitude'])?$pic['maps_longitude']:old('maps_longitude') }}"><br><br>
-                    @error('maps_longitude')
-                    <div>{{$message}}</div>
+                    <label for="longitude">Longitude Maps:</label>
+                    <input type="text" id="longitude" name="longitude" value="{{ isset($pic['longitude'])?$pic['maps_lolongitudengitude']:old('longitude') }}"><br><br>
+                    @error('longitude')
+                    <div class="text-red-500">{{$message}}</div>
                     @enderror 
+                </div>
+
+                <div class="my-4 text-md">
+                    <label class="font-bold">Upload image:</label>:</label>
+                    <input class="" type="file" name="image" accept="image/*" value="{{(isset($event))?$event->image:old('image')}}">
+                    @error('image')
+                    <div class="text-red-500">{{$message}}</div>
+                    @enderror
                 </div>
             
                 <button type="submit">Submit</button>

@@ -16,12 +16,13 @@ class Picupps extends Model
         'id_maps',
         'no_telepon',
         'alamat',
-        'harga'
+        'harga',
+        'image'
 
     ];
 
     public function map()
     {
-        return $this->belongsTo(Mapps::class, 'id_maps');
+        return $this->belongsTo(Mapps::class, 'id_maps', 'id');
     }
 }

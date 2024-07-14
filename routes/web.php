@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BackController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CoorController;
 use App\Http\Controllers\LandingController;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function(){
-    return view('frontpage.landing');
+    return view('welcome');
 });
 
 Route::get('/globe', function(){
@@ -42,8 +43,13 @@ Route::resource('/book', BookController::class);
 // Route::resource('/adminpage', AdminController::class);
 
 Route::group(['middleware'=>'auth:sanctum'], function () {
-    Route::resource('/adminpage', AdminController::class);
-    Route::put('/adminpage/{id}', [AdminController::class, 'update'])->name('adminpage.update');
+    //Route::resource('/adminpage', AdminController::class);
+    Route::resource('/adminPages', BackController::class);
+    Route::post('/adminPages', [BackController::class, 'index'])->name('adminPages');
+    Route::post('/adminPages', [BackController::class, 'create'])->name('adminPages.create');
+    Route::post('/adminPages', [BackController::class, 'store'])->name('adminPages.store');
+
+    //Route::put('/adminpage/{id}', [AdminController::class, 'update'])->name('adminpage.update');
 
    });
 
